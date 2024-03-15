@@ -1,0 +1,87 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center">ABMC de Menú</h2>
+        </div>
+    </div>
+
+    <form class="row g-3">
+        <div class="col-12">
+            <h6>Datos del Menu</h6>
+        </div>
+        <div class="col-md-6">
+            <label for="fecha" class="form-label">Fecha</label>
+            <input type="date" class="form-control" id="fecha">
+        </div>
+
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-danger">Enviar</button>
+        </div>
+
+        <div class="col-12">
+            <label for="observacionMenu" class="form-label">Observación</label>
+          <input type="text" class="form-control" id="observacionMenu">
+        </div>
+
+      </form>
+
+    <form class="row g-3" [formGroup]="formDetail">
+        <div class="col-12">
+            <h6>Datos del Producto</h6>
+        </div>
+        <div class="col-md-6">
+            <label for="idproducto" class="form-label">Id</label>
+            <input type="text" class="form-control" id="idproducto" formControlName="idproducto">
+        </div>
+
+        <div class="col-md-6">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre">
+        </div>
+
+        <div class="col-12">
+            <label for="observacionProducto" class="form-label">Observación</label>
+          <input type="text" class="form-control" id="observacionProducto">
+        </div>
+
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Agrear</button>
+          <button type="button" class="btn btn-secondary">Buscar</button>
+        </div>
+      </form>
+
+      <div class="row">
+        <div class="col-12">
+            <h6>Productos agregados al Menú</h6>
+        </div>
+
+        <div class="col-12">        
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Observacion</th>
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of productsMenu">
+                        <th>{{p.idproducto}}</th>
+                        <th>{{p.nombre}}</th>
+                        <th>{{p.observacion}}</th>
+                        <th><button class="btn btn-warning">Mod</button></th>
+                        <th><button class="btn btn-danger">Elim</button></th>    
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+</div>
+
+
+<app-search-product
+[products]="products"
+(selected)="setProductSelected($event)"
+></app-search-product>
