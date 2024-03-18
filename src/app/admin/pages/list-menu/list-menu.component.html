@@ -1,1 +1,28 @@
-<p>list-menu works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>fecha</th>
+                        <th>Semana</th>
+                        <th>Dia</th>
+                        <th>Alta</th>
+                        <th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let c of cabeceras">
+                        <td>{{c.idcabeceramenu}}</td>
+                        <td>{{c.fecha}}</td>
+                        <td>{{c.nrosemana}}</td>
+                        <td>{{c.nrodia}}</td>
+                        <td>{{c.fechaAlta}}</td>
+                        <a class="btn btn-secondary" [routerLink]="['/admin', 'abmcMenu', c.idcabeceramenu]">Ver</a>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

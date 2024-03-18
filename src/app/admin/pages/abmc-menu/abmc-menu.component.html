@@ -5,22 +5,22 @@
         </div>
     </div>
 
-    <form class="row g-3">
+    <form class="row g-3" [formGroup]="formHead">
         <div class="col-12">
             <h6>Datos del Menu</h6>
         </div>
         <div class="col-md-6">
             <label for="fecha" class="form-label">Fecha</label>
-            <input type="date" class="form-control" id="fecha">
+            <input type="date" class="form-control" id="fecha" formControlName="fecha">
         </div>
 
         <div class="col-md-6">
-            <button type="submit" class="btn btn-danger">Enviar</button>
+            <button type="button" class="btn btn-danger" (click)="saveMenu()">Enviar</button>
         </div>
 
         <div class="col-12">
             <label for="observacionMenu" class="form-label">Observación</label>
-          <input type="text" class="form-control" id="observacionMenu">
+          <input type="text" class="form-control" id="observacionMenu" formControlName="observacion">
         </div>
 
       </form>
@@ -36,16 +36,16 @@
 
         <div class="col-md-6">
           <label for="nombre" class="form-label">Nombre</label>
-          <input type="text" class="form-control" id="nombre">
+          <input type="text" class="form-control" id="nombre" formControlName="nombre">
         </div>
 
         <div class="col-12">
             <label for="observacionProducto" class="form-label">Observación</label>
-          <input type="text" class="form-control" id="observacionProducto">
+          <input type="text" class="form-control" id="observacionProducto" formControlName="observacion">
         </div>
 
         <div class="col-12">
-          <button type="submit" class="btn btn-primary">Agrear</button>
+          <button type="button" class="btn btn-primary" (click)="addProductMenu()">{{(action==='Create')?'Añadir':'Modificar'}}</button>
           <button type="button" class="btn btn-secondary">Buscar</button>
         </div>
       </form>
@@ -68,11 +68,11 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let p of productsMenu">
-                        <th>{{p.idproducto}}</th>
-                        <th>{{p.nombre}}</th>
-                        <th>{{p.observacion}}</th>
-                        <th><button class="btn btn-warning">Mod</button></th>
-                        <th><button class="btn btn-danger">Elim</button></th>    
+                        <td>{{p.idproducto}}</td>
+                        <td>{{p.nombre}}</td>
+                        <td>{{p.observacion}}</td>
+                        <td><button class="btn btn-warning" (click)="modifyProductMenu(p)">Mod</button></td>
+                        <td><button class="btn btn-danger" (click)="remove(p.idproducto)">Elim</button></td>    
                     </tr>
                 </tbody>
             </table>
