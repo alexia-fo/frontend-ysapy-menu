@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductListService } from '../../services/product-list.service';
+import { Product, ProductsMenuDia } from '../../models/products-menu';
 
 @Component({
   selector: 'app-product-list',
@@ -7,15 +8,21 @@ import { ProductListService } from '../../services/product-list.service';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit{
+
+  productsDay: Product[] = [];
+  fecha: Date = new Date();//nada mas para evitar errores en  el template al no inicializar
+  observacion = '';
   
   constructor(private serviceP: ProductListService){}
 
   ngOnInit(): void {
-    this.serviceP.obtenerProductos().subscribe({
-      next:(response)=>{
-        console.log(response)
+    this.serviceP.productosMenuDia().subscribe({
+      next:(response: ProductsMenuDia)=>{
+        this.productsDay = response.productos;
+        this.fecha = response.fecha;
+        this.observacion = response.observacion;
       },
-      error:(error)=>{
+      error:(error)=>{//TODO: falta mostrar los mensajes de error 
         console.log(error);
       }
     })

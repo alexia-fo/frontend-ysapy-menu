@@ -15,7 +15,11 @@ export class ProductListService {
   ) { }
 
 
-  obtenerProductos(): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}`);
+  obtenerCabecerasMenus(): Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}`);//TODO: falta el manejo de errores
+  }
+
+  productosMenuDia(): Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/getProducts`);//TODO: falta el manejo de errores
   }
 }

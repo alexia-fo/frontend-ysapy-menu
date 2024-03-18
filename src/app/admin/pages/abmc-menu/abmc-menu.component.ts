@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AbmcMenuService } from '../../services/abmc-menu.service';
 import { Product, ProductList, ProductMenu } from '../../models/product';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { response } from 'express';
 import { ActivatedRoute, Params } from '@angular/router';
-import { forkJoin, of, switchMap } from 'rxjs';
+import { forkJoin, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-abmc-menu',
@@ -44,14 +43,16 @@ export class AbmcMenuComponent implements OnInit{
     private activatedRoute: ActivatedRoute
     ){}
 
-    
+
+    //PROBLEMAS CON EL FORKJOIN
+    /*
   ngOnInit(): void {
     // Utilizamos forkJoin para ejecutar ambos observables simultáneamente
     forkJoin([
       this.activatedRoute.params.pipe(
         switchMap((params: Params) => {
           this.idCabecera = params['idCabecera'] ? params['idCabecera'] : null;
-          console.log(this.idCabecera)
+          console.log("Esto es el id de cabecera", this.idCabecera)
           if (this.idCabecera !== null) {
             // Si hay un ID en la URL, realizamos la petición HTTP utilizando ese ID
             return this.serviceMenu.getMenuSelected(this.idCabecera);
@@ -64,39 +65,97 @@ export class AbmcMenuComponent implements OnInit{
       this.serviceMenu.productList()
     ]).subscribe((data:any) => {//[menuSelected, productListResponse]: [any, ProductList]
       // console.log(menuSelected)
-      console.log(data)
+      console.log("Esto es la data", data)
       // console.log(productListResponse.products)
       
       // this.products = productListResponse.products;
       
     });
   }
+  */
 
-  // ngOnInit(){
 
-  //   this.activatedRoute.params.pipe(
-  //     switchMap((params:Params)=>{
-  //       this.idCabecera = params['idCabecera'] ? +params['idCabecera'] : null;
+  //PROBLEMAS CON EL FORKJOIN
+  /*
+  ngOnInit(){
 
-  //       if (this.idCabecera !== null) {
-  //         // Si hay un ID en la URL, realizamos la petición HTTP utilizando ese ID
-  //         return this.serviceMenu.getMenuSelected(this.idCabecera);
-  //       } else {
-  //         // Si no hay ID en la URL, retornamos un observable vacío
-  //         return of (null);
-  //       }
-  //     })
-  //   )
+     const data = this.activatedRoute.params.pipe(
+       switchMap((params:Params)=>{
+         this.idCabecera = params['idCabecera'] ? +params['idCabecera'] : null;
 
-  //   this.serviceMenu.productList().subscribe({
-  //     next:(response: ProductList)=>{
-  //       this.products = response.products;
-  //     },
-  //     error:(error)=>{
-  //       console.log(error);
-  //     }
-  //   })
-  // }
+         if (this.idCabecera !== null) {
+           // Si hay un ID en la URL, realizamos la petición HTTP utilizando ese ID
+           return this.serviceMenu.getMenuSelected(this.idCabecera);
+         } else {
+           // Si no hay ID en la URL, retornamos un observable vacío
+           return of (null);
+         }
+       })
+     );
+
+      const products = this.serviceMenu.productList();
+
+      forkJoin([
+        data,
+        products
+      ]).subscribe({
+        next:(response)=>{
+          console.log("response", response)
+        },
+        error:(error)=>{
+          console.log(error)
+        }
+      });
+    }
+   */
+
+//EN ESTE NO HAY PROBLEMAS CON EL FORKJOIN
+
+    
+    ngOnInit(): void {
+      
+      const data = this.activatedRoute.params.pipe(
+        switchMap((params: Params) => {
+          this.idCabecera = params['idCabecera'] ? +params['idCabecera'] : null;
+
+          // Creamos una observable para obtener los productos, independientemente de si hay un ID en la URL o no
+          const productList$ = this.serviceMenu.productList();
+
+          if (this.idCabecera !== null) {
+            // Si hay un ID en la URL, también obtenemos los datos del menú
+            const getMenuSelected$ = this.serviceMenu.getMenuSelected(this.idCabecera);
+
+            return forkJoin([getMenuSelected$, productList$]);
+          } else {
+            // Si no hay ID en la URL, solo obtenemos los productos y el menú se define como null
+            return forkJoin([of(null), productList$]);
+          }
+        })
+      );
+
+      data.subscribe({
+        next: ([menuData, productData]: [any, any]) => {
+          console.log('Menu Data:', menuData);
+          console.log('Product Data:', productData);
+
+          this.products=productData.products;
+          console.log(this.products);
+          if(menuData){
+            console.log("Tiene datos para el formulario")
+            this.productsMenu = menuData.productos;
+            this.formHead.patchValue({
+              fecha:menuData.fecha,
+              observacion: menuData.observacion
+            })
+          }
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
+    }
+
+    
 
   // addProductMenu(){
   //   console.log(this.formDetail.value);
@@ -150,16 +209,30 @@ export class AbmcMenuComponent implements OnInit{
       return;
     }
 
-    this.serviceMenu.saveMenu({fecha, observacion, productos: this.productsMenu}).subscribe({
-      next:(response)=>{
-        console.log(response)
-      },
-      error:(error)=>{
-        console.log(error)
-      }
-    })
+    if(this.idCabecera){//modificar un menu
+      this.serviceMenu.modifyMenu(this.idCabecera, {fecha, observacion, productos:this.productsMenu}).subscribe({
+        next:(response:any)=>{
+          console.log(response)
+        },
+        error:(error)=>{
+          console.log(error)
+        }
+      });
+    }else{//guardar un nuevo menu
+      this.serviceMenu.saveMenu({fecha, observacion, productos: this.productsMenu}).subscribe({
+        next:(response)=>{
+          console.log(response)
+        },
+        error:(error)=>{
+          console.log(error)
+        }
+      });
+    }
 
-
+    //se podria crear un metodo para limpiar
+    this.formHead.reset();
+    this.formDetail.reset();
+    this.productsMenu=[];
   }
 
   setProductSelected(product: Product){

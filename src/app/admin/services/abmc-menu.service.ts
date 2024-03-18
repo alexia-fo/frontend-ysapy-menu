@@ -35,4 +35,7 @@ export class AbmcMenuService {
     return this.http.post<any>(`${this.apiUrl}`, {menu});//el body tendra un objeto menu, si no ponia las llaves se obtendria directamente las propiedades del menu
   }
   
+  modifyMenu(idCabecera: number, menu: Menu): Observable<any>{//todo: falta mensaje como response
+    return this.http.put<any>(`${this.apiUrl}/${idCabecera}`, {menu});
+  }
 }

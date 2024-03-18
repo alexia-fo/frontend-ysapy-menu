@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AbmcMenuService } from '../../services/abmc-menu.service';
 import { response } from 'express';
 import { CMenuSemanal } from '../../models/product';
-import { error } from 'jquery';
 
 @Component({
   selector: 'app-list-menu',
