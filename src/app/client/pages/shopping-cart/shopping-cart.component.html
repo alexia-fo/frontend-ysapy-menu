@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Img</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Quitar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of basketProducts">
+                        <td>img</td>
+                        <td>{{p.nombre}}</td>
+                        <td>{{p.cantidad}}</td>
+                        <td>{{p.precio | number}}</td>
+                        <!--<td><button class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>-->
+                        <td class="text-center"><i class="bi bi-trash fs-5" (click)="deleteProduct(p.idproducto)"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
