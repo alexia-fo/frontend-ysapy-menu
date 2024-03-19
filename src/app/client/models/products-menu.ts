@@ -2,6 +2,8 @@ export interface Product{
     idproducto: number,
     item:number,
     nombre:string,
+    precio:number,
+    img:string;
     observacion:string
 }
 

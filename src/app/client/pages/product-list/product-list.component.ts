@@ -21,6 +21,8 @@ export class ProductListComponent implements OnInit{
         this.productsDay = response.productos;
         this.fecha = response.fecha;
         this.observacion = response.observacion;
+
+        console.log(this.productsDay)
       },
       error:(error)=>{//TODO: falta mostrar los mensajes de error 
         console.log(error);
