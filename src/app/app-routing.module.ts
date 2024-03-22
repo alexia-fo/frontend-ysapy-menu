@@ -4,6 +4,11 @@ import { AdminModule } from './admin/admin.module';
 
 const routes: Routes = [
   {
+    path:'',
+    loadChildren:()=>import('./authentication/authentication.module').then(m=>m.AuthenticationModule),
+
+  },
+  {
     path:'client',
     loadChildren:()=>import('./client/client.module').then(m=>m.ClientModule),
   },

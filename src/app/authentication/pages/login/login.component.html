@@ -1,1 +1,11 @@
-<p>login works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="form">
+                <input type="email" formControlName="correo">
+                <input type="password" formControlName="contra">
+                <button type="button" (click)="login()">Ingresar</button>
+            </form>
+        </div>
+    </div>
+</div>
