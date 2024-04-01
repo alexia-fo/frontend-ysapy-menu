@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminModule } from './admin/admin.module';
+import { ProfileComponent } from './shared/pages/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -15,11 +16,16 @@ const routes: Routes = [
   {
     path:'admin',
     loadChildren:()=>import('./admin/admin.module').then(m=>AdminModule)
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   }
 ]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MenuComponent } from './components/menu/menu.component';
+import { MenubarComponent } from './components/menubar/menubar.component';
 
 
 
 @NgModule({
   declarations: [
-    MenuComponent
+    MenubarComponent
   ],
   imports: [
     CommonModule,
     RouterModule
+  ],
+  exports:[
+    MenubarComponent
   ]
 })
 export class UtilitiesModule { }

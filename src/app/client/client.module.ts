@@ -6,6 +6,7 @@ import { MenuListComponent } from './pages/menu-list/menu-list.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
 import { MainComponent } from './main/main.component';
 import { ShoppingCartComponent } from './pages/shopping-cart/ShoppingCartComponent';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -18,7 +19,7 @@ import { ShoppingCartComponent } from './pages/shopping-cart/ShoppingCartCompone
   imports: [
     CommonModule,
     ClientRoutingModule,
-
+    SharedModule
     
   ]
 })

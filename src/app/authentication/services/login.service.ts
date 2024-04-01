@@ -49,4 +49,8 @@ export class LoginService {
     this.serviceToken.removeToken();
   }
 
+  get getUser(){
+    return this._usuario;
+  }
+
 }
