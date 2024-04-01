@@ -4,7 +4,7 @@
         <div class="col-12" *ngIf="usuario">
             <p>Nombre: {{usuario.nombre}}</p>
             <p>Correo: {{usuario.correo}}</p>
-            <!-- <img [src]="apiUrl" alt=""> -->
+            <img [src]="apiUrl+usuario.idUsuario" class="img-fluid rounded-start w-100" alt="...">
         </div>
     </div>
 </div>

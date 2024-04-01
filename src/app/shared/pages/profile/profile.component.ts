@@ -14,7 +14,7 @@ export class ProfileComponent implements OnInit{
   usuario!: Profile;
 
   //TODO: falta implementar en el backend
-  // apiUrl:string=`${environment.API_URL}/uploads/usuarios/${this.usuario.idUsuario}`;
+  apiUrl:string=`${environment.API_URL}/menu/uploads/usuarios/`;
 
   constructor(
     private serviceAuth: LoginService
@@ -24,7 +24,6 @@ export class ProfileComponent implements OnInit{
     this.serviceAuth.getProfile().subscribe({
       next:(response:ResponseProfile)=>{
         this.usuario=response.usuario;
-        console.log(this.usuario)
       },
       error: (error)=>{
         console.log(error);
