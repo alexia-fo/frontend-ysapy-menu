@@ -1,7 +1,11 @@
+//TODO: PARA GOOGLE SIGNIN
+declare var google: any;  
+
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ResponseProfile } from '../../models/login.model';
+import { error } from 'jquery';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +25,17 @@ export class LoginComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
+    google.accounts.id.initialize({
+      client_id:'600004355623-iairf9jhfk9osjglailki66kc62r68q7.apps.googleusercontent.com',
+      callback:(resp:any)=> this.handleLogin(resp)
+      });
+
+    google.accounts.id.renderButton(document.getElementById('google-btn'),{
+      theme:'filled_blue',
+      size: 'large',
+      with:350,
+
+    })
   }
 
   login(){
@@ -56,4 +71,26 @@ export class LoginComponent implements OnInit{
     //console.log('Family Name: ' + responsePayload.family_name);
     //console.log("Image URL: " + responsePayload.picture);
     //console.log("Email: " + responsePayload.email);
+
+    //todo:otro you tube
+    handleLogin(response: any){
+
+      console.log("response ", response)
+      if(response){
+        console.log("Ejecutando el if")
+        this.serviceLG.loginGoogle(response.credential).subscribe({
+          next:(res)=>{
+
+            console.log("next-> ", res)
+          },
+          error:(error)=>{
+            console.log(error);
+          }
+        })
+      }
+    }
+
+    singOut(){
+      this.serviceLG.signOut();
+    }
 }

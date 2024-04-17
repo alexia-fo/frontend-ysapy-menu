@@ -1,3 +1,5 @@
+declare var google:any;
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, switchMap, tap } from 'rxjs';
@@ -13,7 +15,7 @@ export class LoginService {
 
   private apiUrl = `${environment.API_URL}/auth`;
   //TODO: falta el manejo de errores
-  private _usuario!: Profile;
+  private _usuario!: Profile;//????creo que recarga con el guardian
 
   constructor(
     private http: HttpClient,
@@ -52,5 +54,28 @@ export class LoginService {
   get getUser(){
     return this._usuario;
   }
+
+  //TODO: probando google sign-in
+  signOut(){
+    google.accounts.id.disableAutoSelect();//you yube
+
+    //udemy
+    google.accounts.id.revoke(localStorage.getItem(this._usuario.correo), (done:any)=>{
+      localStorage.clear();
+      // localStorage.reload();
+    })
+  }
+
+  loginGoogle(id_token:string):Observable<any>{
+    console.log("loginserv ", id_token)
+    return this.http.post<any>(`${this.apiUrl}/google`, {id_token})
+    .pipe(
+      tap((response)=>{
+        // this.serviceToken.saveToken(response.token);
+        console.log("tap ", response)
+      })
+    );
+  }
+
 
 }
